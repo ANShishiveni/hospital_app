@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+        }
+        .sidebar .nav-link {
+            color: #ecf0f1;
+            border-radius: 10px;
+            margin: 5px 10px;
+            transition: all 0.3s ease;
+        }
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: translateX(5px);
+        }
+        .sidebar .nav-link.active {
+            background: #3498db;
+            color: #fff;
+        }
+        .main-content {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        .stat-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .table-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .btn-action {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        /* Consistent color scheme based on sidebar */
+        .bg-primary, .btn-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-success, .btn-success {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-info, .btn-info {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-warning, .btn-warning {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-secondary, .btn-secondary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-danger, .btn-danger {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-dark, .btn-dark {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-primary {
+            color: #2c3e50 !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-primary:hover {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            color: white !important;
+        }
+        .btn-outline-success {
+            color: #2c3e50 !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-success:hover {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            color: white !important;
+        }
+        .btn-outline-warning {
+            color: #2c3e50 !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-warning:hover {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            color: white !important;
+        }
+        .btn-outline-info {
+            color: #2c3e50 !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-info:hover {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            color: white !important;
+        }
+        .table-dark {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .card-header.bg-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .card-header.bg-success {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .card-header.bg-info {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .card-header.bg-warning {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .card-header.bg-secondary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .card-header.bg-danger {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .card-header.bg-dark {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        /* Statistics cards with gradient */
+        .stat-card.bg-primary,
+        .stat-card.bg-success,
+        .stat-card.bg-info,
+        .stat-card.bg-warning,
+        .stat-card.bg-secondary,
+        .stat-card.bg-danger {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        /* Quick actions section */
+        .card-header.bg-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        /* All action buttons */
+        .btn-primary, .btn-success, .btn-info, .btn-warning, .btn-secondary, .btn-danger, .btn-dark {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+            color: white !important;
+        }
+        /* Hover effects for all buttons */
+        .btn-primary:hover, .btn-success:hover, .btn-info:hover, .btn-warning:hover, .btn-secondary:hover, .btn-danger:hover, .btn-dark:hover {
+            background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 px-0 sidebar">
+                <div class="d-flex flex-column p-3">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-hospital fa-2x text-white mb-2"></i>
+                        <h5 class="text-white">Hospital MS</h5>
+                    </div>
+                    
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="#dashboard" class="nav-link active" data-bs-toggle="tab">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#patients" class="nav-link" data-bs-toggle="tab">
+                                <i class="fas fa-users me-2"></i>Patients
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#doctors" class="nav-link" data-bs-toggle="tab">
+                                <i class="fas fa-user-md me-2"></i>Doctors
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#appointments" class="nav-link" data-bs-toggle="tab">
+                                <i class="fas fa-calendar-check me-2"></i>Appointments
+                            </a>
+                        </li>
+                        {% if current_user.role in ['admin', 'doctor'] %}
+                        <li class="nav-item">
+                            <a href="#medical-records" class="nav-link" data-bs-toggle="tab">
+                                <i class="fas fa-file-medical me-2"></i>Medical Records
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#prescriptions" class="nav-link" data-bs-toggle="tab">
+                                <i class="fas fa-pills me-2"></i>Prescriptions
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if current_user.role == 'admin' %}
+                        <li class="nav-item">
+                            <a href="{{ url_for('users') }}" class="nav-link">
+                                <i class="fas fa-users-cog me-2"></i>User Management
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    
+                    <hr class="text-white">
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle fa-2x me-2"></i>
+                            <strong>{{ current_user.username }}</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <!-- Top Navigation -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                    <div class="container-fluid">
+                        <h4 class="mb-0">Dashboard</h4>
+                        <div class="navbar-nav ms-auto">
+                            {% if current_user.role in ['admin', 'staff'] %}
+                            <a href="{{ url_for('add_patient') }}" class="btn btn-primary me-2">
+                                <i class="fas fa-user-plus me-1"></i>Add Patient
+                            </a>
+                            {% endif %}
+                            {% if current_user.role == 'admin' %}
+                            <a href="{{ url_for('add_doctor') }}" class="btn btn-success me-2">
+                                <i class="fas fa-user-md me-1"></i>Add Doctor
+                            </a>
+                            {% endif %}
+                            {% if current_user.role in ['admin', 'staff'] %}
+                            <a href="{{ url_for('add_appointment') }}" class="btn btn-info me-2">
+                                <i class="fas fa-calendar-plus me-1"></i>Schedule
+                            </a>
+                            {% endif %}
+                            {% if current_user.role in ['admin', 'doctor'] %}
+                            <a href="{{ url_for('upload_medical_record') }}" class="btn btn-warning me-2">
+                                <i class="fas fa-upload me-1"></i>Upload Record
+                            </a>
+                            <a href="{{ url_for('add_prescription') }}" class="btn btn-secondary">
+                                <i class="fas fa-pills me-1"></i>Prescription
+                            </a>
+                            {% endif %}
+                            {% if current_user.role == 'admin' %}
+                            <a href="{{ url_for('users') }}" class="btn btn-dark">
+                                <i class="fas fa-users-cog me-1"></i>Users
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="p-4">
+                    <!-- Flash Messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- Role-based Welcome Message -->
+                    <div class="alert alert-info border-0" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user-circle fa-2x me-3"></i>
+                            <div>
+                                <h6 class="mb-1">Welcome, {{ current_user.username }}!</h6>
+                                <p class="mb-0">
+                                    {% if current_user.role == 'admin' %}
+                                        <strong>Administrator Access:</strong> You have full access to all system features including user management, doctor management, and all patient operations.
+                                    {% elif current_user.role == 'doctor' %}
+                                        <strong>Doctor Access:</strong> You can manage medical records, prescriptions, patient care, and your availability. You cannot add/remove doctors or manage users.
+                                    {% elif current_user.role == 'staff' %}
+                                        <strong>Staff Access:</strong> You can manage patients, schedule appointments, and perform basic administrative tasks. You cannot access medical records or prescriptions.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Dashboard Tab -->
+                        <div class="tab-pane fade show active" id="dashboard">
+                            <!-- Statistics Cards -->
+                            <div class="row mb-4">
+                                <div class="col-xl-2 col-md-4 mb-3">
+                                    <div class="card stat-card bg-primary text-white h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-users fa-2x mb-2"></i>
+                                            <h3 class="mb-0">{{ stats.total_patients }}</h3>
+                                            <p class="mb-0">Total Patients</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-4 mb-3">
+                                    <div class="card stat-card bg-success text-white h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-user-md fa-2x mb-2"></i>
+                                            <h3 class="mb-0">{{ stats.total_doctors }}</h3>
+                                            <p class="mb-0">Total Doctors</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-4 mb-3">
+                                    <div class="card stat-card bg-info text-white h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-calendar-check fa-2x mb-2"></i>
+                                            <h3 class="mb-0">{{ stats.total_appointments }}</h3>
+                                            <p class="mb-0">Appointments</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-4 mb-3">
+                                    <div class="card stat-card bg-warning text-white h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-file-medical fa-2x mb-2"></i>
+                                            <h3 class="mb-0">{{ stats.total_records }}</h3>
+                                            <p class="mb-0">Medical Records</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-4 mb-3">
+                                    <div class="card stat-card bg-secondary text-white h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-pills fa-2x mb-2"></i>
+                                            <h3 class="mb-0">{{ stats.total_prescriptions }}</h3>
+                                            <p class="mb-0">Prescriptions</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-4 mb-3">
+                                    <div class="card stat-card bg-danger text-white h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-calendar-day fa-2x mb-2"></i>
+                                            <h3 class="mb-0">{{ stats.today_appointments }}</h3>
+                                            <p class="mb-0">Today's Appts</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="card table-card">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                {% if current_user.role in ['admin', 'staff'] %}
+                                                <div class="col-md-3 text-center mb-3">
+                                                    <a href="{{ url_for('add_patient') }}" class="btn btn-outline-primary btn-lg w-100">
+                                                        <i class="fas fa-user-plus fa-2x mb-2 d-block"></i>
+                                                        Add Patient
+                                                    </a>
+                                                </div>
+                                                {% endif %}
+                                                {% if current_user.role in ['admin', 'staff'] %}
+                                                <div class="col-md-3 text-center mb-3">
+                                                    <a href="{{ url_for('add_appointment') }}" class="btn btn-outline-success btn-lg w-100">
+                                                        <i class="fas fa-calendar-plus fa-2x mb-2 d-block"></i>
+                                                        Schedule Appointment
+                                                    </a>
+                                                </div>
+                                                {% endif %}
+                                                {% if current_user.role in ['admin', 'doctor'] %}
+                                                <div class="col-md-3 text-center mb-3">
+                                                    <a href="{{ url_for('upload_medical_record') }}" class="btn btn-outline-warning btn-lg w-100">
+                                                        <i class="fas fa-upload fa-2x mb-2 d-block"></i>
+                                                        Upload Record
+                                                    </a>
+                                                </div>
+                                                {% endif %}
+                                                {% if current_user.role in ['admin', 'doctor'] %}
+                                                <div class="col-md-3 text-center mb-3">
+                                                    <a href="{{ url_for('add_prescription') }}" class="btn btn-outline-info btn-lg w-100">
+                                                        <i class="fas fa-pills fa-2x mb-2 d-block"></i>
+                                                        Add Prescription
+                                                    </a>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Patients Tab -->
+                        <div class="tab-pane fade" id="patients">
+                            <div class="card table-card">
+                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-users me-2"></i>Patients</h5>
+                                    {% if current_user.role in ['admin', 'staff'] %}
+                                    <a href="{{ url_for('add_patient') }}" class="btn btn-light btn-sm">
+                                        <i class="fas fa-plus me-1"></i>Add Patient
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    {% if patients %}
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Age</th>
+                                                        <th>Gender</th>
+                                                        <th>Contact</th>
+                                                        <th>Blood Type</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for patient in patients %}
+                                                    <tr>
+                                                        <td>{{ patient.id }}</td>
+                                                        <td><strong>{{ patient.name }}</strong></td>
+                                                        <td>{{ patient.age }}</td>
+                                                        <td>
+                                                            <span class="badge bg-{{ 'primary' if patient.gender == 'Male' else 'danger' }}">
+                                                                {{ patient.gender }}
+                                                            </span>
+                                                        </td>
+                                                        <td>{{ patient.contact_number or 'N/A' }}</td>
+                                                        <td>{{ patient.blood_type or 'N/A' }}</td>
+                                                        <td>
+                                                            {% if current_user.role in ['admin', 'staff'] %}
+                                                            <a href="{{ url_for('edit_patient', patient_id=patient.id) }}" class="btn btn-primary btn-action me-1">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <a href="{{ url_for('delete_patient', patient_id=patient.id) }}" class="btn btn-danger btn-action"
+                                                               onclick="return confirm('Delete patient {{ patient.name }}?')">
+                                                                <i class="fas fa-trash"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                            {% if current_user.role in ['admin', 'doctor'] %}
+                                                            <a href="{{ url_for('upload_medical_record') }}?patient_id={{ patient.id }}" class="btn btn-warning btn-action me-1">
+                                                                <i class="fas fa-upload"></i>
+                                                            </a>
+                                                            <a href="{{ url_for('add_prescription') }}?patient_id={{ patient.id }}" class="btn btn-secondary btn-action">
+                                                                <i class="fas fa-pills"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted text-center">No patients registered yet.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Doctors Tab -->
+                        <div class="tab-pane fade" id="doctors">
+                            <div class="card table-card">
+                                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-user-md me-2"></i>Doctors</h5>
+                                    {% if current_user.role == 'admin' %}
+                                    <a href="{{ url_for('add_doctor') }}" class="btn btn-light btn-sm">
+                                        <i class="fas fa-plus me-1"></i>Add Doctor
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    {% if doctors %}
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Specialization</th>
+                                                        <th>License</th>
+                                                        <th>Experience</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for doctor in doctors %}
+                                                    <tr>
+                                                        <td>{{ doctor.id }}</td>
+                                                        <td><strong>{{ doctor.name }}</strong></td>
+                                                        <td>
+                                                            <span class="badge bg-secondary">{{ doctor.specialization }}</span>
+                                                        </td>
+                                                        <td>{{ doctor.license_number }}</td>
+                                                        <td>{{ doctor.experience_years }} years</td>
+                                                        <td>
+                                                            {% if current_user.role == 'admin' %}
+                                                            <a href="{{ url_for('edit_doctor', doctor_id=doctor.id) }}" class="btn btn-primary btn-action me-1">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <a href="{{ url_for('delete_doctor', doctor_id=doctor.id) }}" class="btn btn-danger btn-action"
+                                                               onclick="return confirm('Delete doctor {{ doctor.name }}?')">
+                                                                <i class="fas fa-trash"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                            {% if current_user.role in ['admin', 'doctor'] %}
+                                                            <a href="{{ url_for('manage_availability', doctor_id=doctor.id) }}" class="btn btn-info btn-action">
+                                                                <i class="fas fa-clock"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted text-center">No doctors registered yet.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appointments Tab -->
+                        <div class="tab-pane fade" id="appointments">
+                            <div class="card table-card">
+                                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Appointments</h5>
+                                    {% if current_user.role in ['admin', 'staff'] %}
+                                    <a href="{{ url_for('add_appointment') }}" class="btn btn-light btn-sm">
+                                        <i class="fas fa-plus me-1"></i>Schedule
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    {% if appointments %}
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Date & Time</th>
+                                                        <th>Patient</th>
+                                                        <th>Doctor</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for appointment in appointments %}
+                                                    <tr>
+                                                        <td>{{ appointment.id }}</td>
+                                                        <td>
+                                                            <strong>{{ appointment.date }}</strong><br>
+                                                            <small class="text-muted">{{ appointment.time or 'No time' }}</small>
+                                                        </td>
+                                                        <td>{{ appointment.patient.name }}</td>
+                                                        <td>
+                                                            {{ appointment.doctor.name }}<br>
+                                                            <small class="text-muted">{{ appointment.doctor.specialization }}</small>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-{{ 'success' if appointment.status == 'completed' else 'warning' if appointment.status == 'scheduled' else 'danger' }}">
+                                                                {{ appointment.status.title() }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            {% if current_user.role in ['admin', 'staff'] %}
+                                                            <a href="{{ url_for('edit_appointment', appointment_id=appointment.id) }}" class="btn btn-primary btn-action me-1">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <a href="{{ url_for('delete_appointment', appointment_id=appointment.id) }}" class="btn btn-danger btn-action" onclick="return confirm('Cancel appointment?')">
+                                                                <i class="fas fa-times"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                            {% if current_user.role in ['admin', 'doctor'] %}
+                                                            <a href="{{ url_for('complete_appointment', appointment_id=appointment.id) }}" class="btn btn-success btn-action me-1">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </a>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted text-center">No appointments scheduled yet.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medical Records Tab -->
+                        <div class="tab-pane fade" id="medical-records">
+                            <div class="card table-card">
+                                <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-file-medical me-2"></i>Medical Records</h5>
+                                    <a href="{{ url_for('upload_medical_record') }}" class="btn btn-light btn-sm">
+                                        <i class="fas fa-upload me-1"></i>Upload
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted text-center">Medical records management will be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Prescriptions Tab -->
+                        <div class="tab-pane fade" id="prescriptions">
+                            <div class="card table-card">
+                                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-pills me-2"></i>Prescriptions</h5>
+                                    <a href="{{ url_for('add_prescription') }}" class="btn btn-light btn-sm">
+                                        <i class="fas fa-plus me-1"></i>Add
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted text-center">Prescription management will be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize Bootstrap tabs
+        var triggerTabList = [].slice.call(document.querySelectorAll('#sidebar a'))
+        triggerTabList.forEach(function (triggerEl) {
+            var tabTrigger = new bootstrap.Tab(triggerEl)
+            triggerEl.addEventListener('click', function (event) {
+                event.preventDefault()
+                tabTrigger.show()
+            })
+        })
+    </script>
+</body>
+</html>

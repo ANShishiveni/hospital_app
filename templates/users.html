@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Hospital Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Consistent gradient color scheme */
+        .bg-primary, .btn-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-success, .btn-success {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-info, .btn-info {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-warning, .btn-warning {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-secondary, .btn-secondary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-danger, .btn-danger {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-dark, .btn-dark {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-primary {
+            color: #2c3e50 !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-primary:hover {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            color: white !important;
+        }
+        .btn-outline-secondary {
+            color: #2c3e50 !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-secondary:hover {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            color: white !important;
+        }
+        .card-header.bg-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .card-header.bg-dark {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .navbar-dark.bg-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        /* Hover effects for all buttons */
+        .btn-primary:hover, .btn-success:hover, .btn-info:hover, .btn-warning:hover, .btn-secondary:hover, .btn-danger:hover, .btn-dark:hover {
+            background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-hospital me-2"></i>Hospital Management System
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
+                <a class="nav-link" href="{{ url_for('add_patient') }}">Add Patient</a>
+                <a class="nav-link" href="{{ url_for('add_doctor') }}">Add Doctor</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-users-cog me-2"></i>User Management
+                        </h4>
+                        <a href="{{ url_for('register') }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-user-plus me-1"></i>Add New User
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        {% if users %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th>Created</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.id }}</td>
+                                            <td>
+                                                <strong>{{ user.username }}</strong>
+                                                {% if user.id == current_user.id %}
+                                                    <span class="badge bg-info ms-2">You</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ user.email }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ 'danger' if user.role == 'admin' else 'success' if user.role == 'doctor' else 'secondary' }}">
+                                                    {{ user.role.title() }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-{{ 'success' if user.is_active else 'danger' }}">
+                                                    {{ 'Active' if user.is_active else 'Inactive' }}
+                                                </span>
+                                            </td>
+                                            <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                            <td>
+                                                {% if user.id != current_user.id %}
+                                                    <a href="{{ url_for('toggle_user_status', user_id=user.id) }}" 
+                                                       class="btn btn-{{ 'warning' if user.is_active else 'success' }} btn-sm me-1"
+                                                       onclick="return confirm('{{ 'Deactivate' if user.is_active else 'Activate' }} user {{ user.username }}?')">
+                                                        <i class="fas fa-{{ 'ban' if user.is_active else 'check' }}"></i>
+                                                        {{ 'Deactivate' if user.is_active else 'Activate' }}
+                                                    </a>
+                                                    
+                                                    {% if user.role != 'admin' %}
+                                                        <a href="{{ url_for('delete_user', user_id=user.id) }}" 
+                                                           class="btn btn-danger btn-sm"
+                                                           onclick="return confirm('Delete user {{ user.username }}? This action cannot be undone!')">
+                                                            <i class="fas fa-trash"></i>
+                                                            Delete
+                                                        </a>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <span class="text-muted">No actions available</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted text-center">No users found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- User Statistics -->
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white text-center">
+                            <div class="card-body">
+                                <i class="fas fa-users fa-2x mb-2"></i>
+                                <h4>{{ users|length }}</h4>
+                                <p class="mb-0">Total Users</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white text-center">
+                            <div class="card-body">
+                                <i class="fas fa-user-check fa-2x mb-2"></i>
+                                <h4>{{ users|selectattr('is_active')|list|length }}</h4>
+                                <p class="mb-0">Active Users</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white text-center">
+                            <div class="card-body">
+                                <i class="fas fa-user-md fa-2x mb-2"></i>
+                                <h4>{{ users|selectattr('role', 'equalto', 'doctor')|list|length }}</h4>
+                                <p class="mb-0">Doctors</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-danger text-white text-center">
+                            <div class="card-body">
+                                <i class="fas fa-user-shield fa-2x mb-2"></i>
+                                <h4>{{ users|selectattr('role', 'equalto', 'admin')|list|length }}</h4>
+                                <p class="mb-0">Administrators</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back to Dashboard -->
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

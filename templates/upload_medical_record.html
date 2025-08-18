@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Medical Record - Hospital Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Consistent gradient color scheme */
+        .bg-primary, .btn-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-success, .btn-success {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-info, .btn-info {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-warning, .btn-warning {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-secondary, .btn-secondary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-danger, .btn-danger {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .bg-dark, .btn-dark {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-primary {
+            color: #2c3e50 !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-primary:hover {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            color: white !important;
+        }
+        .btn-outline-secondary {
+            color: #2c3e50 !important;
+            border-color: #2c3e50 !important;
+        }
+        .btn-outline-secondary:hover {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+            color: white !important;
+        }
+        .card-header.bg-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        .navbar-dark.bg-primary {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+        /* Hover effects for all buttons */
+        .btn-primary:hover, .btn-success:hover, .btn-info:hover, .btn-warning:hover, .btn-secondary:hover, .btn-danger:hover, .btn-dark:hover {
+            background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-hospital me-2"></i>Hospital Management System
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
+                <a class="nav-link" href="{{ url_for('add_patient') }}">Add Patient</a>
+                <a class="nav-link" href="{{ url_for('add_doctor') }}">Add Doctor</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-upload me-2"></i>Upload Medical Record
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('upload_medical_record') }}" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="patient_id" class="form-label">Select Patient *</label>
+                                        <select class="form-select" id="patient_id" name="patient_id" required>
+                                            <option value="">Choose a patient</option>
+                                            {% for patient in patients %}
+                                            <option value="{{ patient.id }}">{{ patient.name }} ({{ patient.age }}, {{ patient.gender }})</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="doctor_id" class="form-label">Select Doctor *</label>
+                                        <select class="form-select" id="doctor_id" name="doctor_id" required>
+                                            <option value="">Choose a doctor</option>
+                                            {% for doctor in doctors %}
+                                            <option value="{{ doctor.id }}">{{ doctor.name }} ({{ doctor.specialization }})</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="record_type" class="form-label">Record Type *</label>
+                                        <select class="form-select" id="record_type" name="record_type" required>
+                                            <option value="">Select record type</option>
+                                            <option value="lab_result">Lab Result</option>
+                                            <option value="xray">X-Ray</option>
+                                            <option value="mri">MRI Scan</option>
+                                            <option value="ct_scan">CT Scan</option>
+                                            <option value="blood_test">Blood Test</option>
+                                            <option value="urine_test">Urine Test</option>
+                                            <option value="ecg">ECG</option>
+                                            <option value="ultrasound">Ultrasound</option>
+                                            <option value="biopsy">Biopsy Report</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="file" class="form-label">Select File *</label>
+                                        <input type="file" class="form-control" id="file" name="file" required 
+                                               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.tiff">
+                                        <div class="form-text">Supported formats: PDF, DOC, DOCX, JPG, PNG, GIF, TIFF (Max: 16MB)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="3" 
+                                          placeholder="Enter description of the medical record..."></textarea>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-upload me-2"></i>Upload Medical Record
+                                </button>
+                                <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

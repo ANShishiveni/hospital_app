@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Doctor - Hospital Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Hospital Management System</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
+                <a class="nav-link" href="{{ url_for('add_patient') }}">Add Patient</a>
+                <a class="nav-link" href="{{ url_for('add_doctor') }}">Add Doctor</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">Edit Doctor: {{ doctor.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('edit_doctor', doctor_id=doctor.id) }}">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Doctor Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ doctor.name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="specialization" class="form-label">Specialization *</label>
+                                <select class="form-select" id="specialization" name="specialization" required>
+                                    <option value="">Select Specialization</option>
+                                    <option value="Cardiology" {% if doctor.specialization == 'Cardiology' %}selected{% endif %}>Cardiology</option>
+                                    <option value="Neurology" {% if doctor.specialization == 'Neurology' %}selected{% endif %}>Neurology</option>
+                                    <option value="Pediatrics" {% if doctor.specialization == 'Pediatrics' %}selected{% endif %}>Pediatrics</option>
+                                    <option value="Orthopedics" {% if doctor.specialization == 'Orthopedics' %}selected{% endif %}>Orthopedics</option>
+                                    <option value="Dermatology" {% if doctor.specialization == 'Dermatology' %}selected{% endif %}>Dermatology</option>
+                                    <option value="Oncology" {% if doctor.specialization == 'Oncology' %}selected{% endif %}>Oncology</option>
+                                    <option value="Psychiatry" {% if doctor.specialization == 'Psychiatry' %}selected{% endif %}>Psychiatry</option>
+                                    <option value="General Medicine" {% if doctor.specialization == 'General Medicine' %}selected{% endif %}>General Medicine</option>
+                                    <option value="Emergency Medicine" {% if doctor.specialization == 'Emergency Medicine' %}selected{% endif %}>Emergency Medicine</option>
+                                    <option value="Surgery" {% if doctor.specialization == 'Surgery' %}selected{% endif %}>Surgery</option>
+                                </select>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Update Doctor</button>
+                                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
