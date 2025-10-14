@@ -3,74 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Patient - Hospital Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Add Patient - Xwepo Hospital Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='{{ url_for('static', filename='libs/bootstrap/bootstrap.min.css') }}'">
+    <link href="{{ url_for('static', filename='libs/fontawesome/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
     <style>
-        /* Consistent gradient color scheme */
-        .bg-primary, .btn-primary {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
+        .card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(44, 166, 154, 0.1);
+            background: var(--white);
         }
-        .bg-success, .btn-success {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-info, .btn-info {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-warning, .btn-warning {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-secondary, .btn-secondary {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-danger, .btn-danger {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-dark, .btn-dark {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .btn-outline-primary {
-            color: #2c3e50 !important;
-            border-color: #2c3e50 !important;
-        }
-        .btn-outline-primary:hover {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            color: white !important;
-        }
-        .btn-outline-secondary {
-            color: #2c3e50 !important;
-            border-color: #2c3e50 !important;
-        }
-        .btn-outline-secondary:hover {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            color: white !important;
-        }
-        .card-header.bg-primary {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-        }
-        .navbar-dark.bg-primary {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-        }
-        /* Hover effects for all buttons */
-        .btn-primary:hover, .btn-success:hover, .btn-info:hover, .btn-warning:hover, .btn-secondary:hover, .btn-danger:hover, .btn-dark:hover {
-            background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        .btn-action {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
         }
     </style>
 </head>
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-teal-dark);">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">
-                <i class="fas fa-hospital me-2"></i>Hospital Management System
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/xwepo_logo.png') }}" alt="Xwepo" class="me-2" style="height: 30px;">
+                <span>Xwepo</span>
             </a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
@@ -94,14 +50,31 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Full Name *</label>
-                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        <label for="first_name" class="form-label">First Name *</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="age" class="form-label">Age</label>
-                                        <input type="number" class="form-control" id="age" name="age" min="0" max="150">
+                                        <label for="last_name" class="form-label">Last Name *</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="date_of_birth" class="form-label">Date of Birth</label>
+                                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" max="{{ today_date }}">
+                                        <div class="form-text">Patient's date of birth (DD/MM/YYYY format) - Cannot be in the future</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="full_name_display" class="form-label">Full Name (Auto-generated)</label>
+                                        <input type="text" class="form-control" id="full_name_display" readonly>
+                                        <div class="form-text">This will be displayed as "[First Name] [Last Name]" (e.g., John Smith)</div>
                                     </div>
                                 </div>
                             </div>
@@ -116,6 +89,7 @@
                                             <option value="Female">Female</option>
                                             <option value="Other">Other</option>
                                         </select>
+                                        <div class="form-text">Select the patient's gender</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -132,6 +106,7 @@
                                             <option value="O+">O+</option>
                                             <option value="O-">O-</option>
                                         </select>
+                                        <div class="form-text">Select the patient's blood type</div>
                                     </div>
                                 </div>
                             </div>
@@ -141,14 +116,18 @@
                                     <div class="mb-3">
                                         <label for="contact_number" class="form-label">Contact Number</label>
                                         <input type="tel" class="form-control" id="contact_number" name="contact_number" 
-                                               placeholder="+1-555-0123">
+                                               placeholder="+264 61 123 4567" maxlength="13" pattern="[0-9+\s]{1,13}"
+                                               oninput="this.value = this.value.replace(/[^0-9+\s]/g, '').slice(0, 13)">
+                                        <div class="form-text">Maximum 13 digits (including country code and spaces)</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="emergency_phone" class="form-label">Emergency Phone</label>
                                         <input type="tel" class="form-control" id="emergency_phone" name="emergency_phone" 
-                                               placeholder="+1-555-0123">
+                                               placeholder="+264 61 123 4567" maxlength="13" pattern="[0-9+\s]{1,13}"
+                                               oninput="this.value = this.value.replace(/[^0-9+\s]/g, '').slice(0, 13)">
+                                        <div class="form-text">Maximum 13 digits (including country code and spaces)</div>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +135,7 @@
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
                                 <textarea class="form-control" id="address" name="address" rows="2" 
-                                          placeholder="Enter patient's address..."></textarea>
+                                          placeholder="e.g., 123 Independence Avenue, Windhoek, Khomas Region"></textarea>
                             </div>
 
                             <div class="mb-3">
@@ -168,7 +147,7 @@
                             <div class="mb-3">
                                 <label for="allergies" class="form-label">Allergies</label>
                                 <textarea class="form-control" id="allergies" name="allergies" rows="2" 
-                                          placeholder="List any known allergies (e.g., Penicillin, Latex, etc.)"></textarea>
+                                          placeholder="e.g., Penicillin, Latex, Peanuts, Shellfish, or write 'None'"></textarea>
                             </div>
 
                             <div class="d-grid gap-2">
@@ -179,13 +158,77 @@
                                     <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                                 </a>
                             </div>
+
+                            <!-- Hidden field for the complete name -->
+                            <input type="hidden" id="complete_name" name="complete_name">
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" onerror="this.onerror=null;this.src='{{ url_for('static', filename='libs/bootstrap/bootstrap.bundle.min.js') }}'"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include Modern Alert System -->
+    {% include 'modern_alerts.html' %}
+    <script>
+        // Function to update the full name display and hidden field
+        function updateFullName() {
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            
+            if (firstName && lastName) {
+                const fullName = `${firstName} ${lastName}`;
+                document.getElementById('full_name_display').value = fullName;
+                document.getElementById('complete_name').value = fullName;
+            } else {
+                document.getElementById('full_name_display').value = '';
+                document.getElementById('complete_name').value = '';
+            }
+        }
+
+        // Add event listeners to first and last name fields
+        document.getElementById('first_name').addEventListener('input', updateFullName);
+        document.getElementById('last_name').addEventListener('input', updateFullName);
+
+        // Update on page load if fields have values
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFullName();
+            
+            // Set max date for date of birth to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date_of_birth').max = today;
+        });
+        
+        // Form submission validation with modern alerts
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const dateOfBirth = document.getElementById('date_of_birth').value;
+            
+            if (dateOfBirth) {
+                const selectedDate = new Date(dateOfBirth);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate > today) {
+                    e.preventDefault();
+                    modernAlert('Date of birth cannot be in the future. Please select a valid date.', 'warning', 'Invalid Date');
+                    document.getElementById('date_of_birth').focus();
+                return false;
+            }
+            
+            // Check if date is not too far in the past (more than 150 years ago)
+            const maxPastDate = new Date();
+            maxPastDate.setFullYear(today.getFullYear() - 150);
+            
+            if (selectedDate < maxPastDate) {
+                    e.preventDefault();
+                    modernAlert('Date of birth seems unrealistic (more than 150 years ago). Please check the date.', 'warning', 'Invalid Date');
+                    document.getElementById('date_of_birth').focus();
+                return false;
+                }
+            }
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/theme-switcher.js') }}"></script>
+
 </body>
 </html>

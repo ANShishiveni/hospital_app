@@ -1,0 +1,341 @@
+<!-- Modern Alert System -->
+<link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="alert-icon me-3">
+                        <i class="fas fa-question-circle text-warning fa-2x"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold" id="confirmModalLabel">Confirm Action</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <p class="mb-0 text-muted" id="confirmMessage">Are you sure you want to proceed?</p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmButton">
+                    <i class="fas fa-check me-1"></i>Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Alert Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="alert-icon me-3">
+                        <i class="fas fa-check-circle text-success fa-2x"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold text-success" id="successModalLabel">Success!</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <p class="mb-0 text-muted" id="successMessage">Operation completed successfully!</p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <i class="fas fa-check me-1"></i>OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Alert Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="alert-icon me-3">
+                        <i class="fas fa-exclamation-triangle text-danger fa-2x"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold text-danger" id="errorModalLabel">Error!</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <p class="mb-0 text-muted" id="errorMessage">An error occurred. Please try again.</p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Warning Alert Modal -->
+<div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-center">
+                    <div class="alert-icon me-3">
+                        <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold text-warning" id="warningModalLabel">Warning!</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <p class="mb-0 text-muted" id="warningMessage">Please review your input and try again.</p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <i class="fas fa-check me-1"></i>OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div id="toastNotification" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="fas fa-info-circle text-primary me-2"></i>
+            <strong class="me-auto">Xwepo</strong>
+            <small class="text-muted">just now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            This is a toast notification.
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modern Alert Styles */
+.modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--light-gray) 0%, var(--white) 100%);
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    background: var(--light-gray);
+    padding: 1rem 1.5rem;
+}
+
+.alert-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.toast {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.toast-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Animation for modals */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+    transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* Toast animations */
+.toast {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+}
+</style>
+
+<script>
+// Modern Alert System JavaScript
+class ModernAlerts {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        // Initialize modals
+        this.confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        this.successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        this.errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+        this.warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
+        this.toast = new bootstrap.Toast(document.getElementById('toastNotification'));
+    }
+
+    // Show confirmation dialog
+    confirm(message, callback, title = 'Confirm Action') {
+        document.getElementById('confirmModalLabel').textContent = title;
+        document.getElementById('confirmMessage').textContent = message;
+        
+        // Remove previous event listeners
+        const confirmBtn = document.getElementById('confirmButton');
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        
+        // Add new event listener
+        newConfirmBtn.addEventListener('click', () => {
+            this.confirmModal.hide();
+            if (callback) callback(true);
+        });
+        
+        this.confirmModal.show();
+    }
+
+    // Show success message
+    success(message, title = 'Success!') {
+        document.getElementById('successModalLabel').textContent = title;
+        document.getElementById('successMessage').textContent = message;
+        this.successModal.show();
+    }
+
+    // Show error message
+    error(message, title = 'Error!') {
+        document.getElementById('errorModalLabel').textContent = title;
+        document.getElementById('errorMessage').textContent = message;
+        this.errorModal.show();
+    }
+
+    // Show warning message
+    warning(message, title = 'Warning!') {
+        document.getElementById('warningModalLabel').textContent = title;
+        document.getElementById('warningMessage').textContent = message;
+        this.warningModal.show();
+    }
+
+    // Show toast notification
+    toast(message, type = 'info') {
+        const toastElement = document.getElementById('toastNotification');
+        const toastHeader = toastElement.querySelector('.toast-header');
+        const toastBody = document.getElementById('toastMessage');
+        
+        // Set icon and colors based on type
+        let icon, bgColor;
+        switch(type) {
+            case 'success':
+                icon = 'fas fa-check-circle text-success';
+                bgColor = 'bg-success';
+                break;
+            case 'error':
+                icon = 'fas fa-exclamation-triangle text-danger';
+                bgColor = 'bg-danger';
+                break;
+            case 'warning':
+                icon = 'fas fa-exclamation-circle text-warning';
+                bgColor = 'bg-warning';
+                break;
+            default:
+                icon = 'fas fa-info-circle text-primary';
+                bgColor = 'bg-primary';
+        }
+        
+        toastHeader.innerHTML = `
+            <i class="${icon} me-2"></i>
+            <strong class="me-auto">Xwepo</strong>
+            <small class="text-muted">just now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        `;
+        
+        toastBody.textContent = message;
+        toastBody.className = `toast-body ${bgColor} text-white`;
+        
+        this.toast.show();
+    }
+}
+
+// Initialize modern alerts system with safety check
+let modernAlerts = null;
+
+// Wait for Bootstrap to load before initializing
+function initializeModernAlerts() {
+    if (typeof bootstrap !== 'undefined') {
+        modernAlerts = new ModernAlerts();
+    } else {
+        // Retry after a short delay if Bootstrap isn't loaded yet
+        setTimeout(initializeModernAlerts, 100);
+    }
+}
+
+// Start initialization
+initializeModernAlerts();
+
+// Replace browser confirm with modern confirm
+function modernConfirm(message, callback, title) {
+    if (modernAlerts) {
+        modernAlerts.confirm(message, callback, title);
+    } else {
+        // Fallback to browser confirm if modernAlerts isn't ready
+        const confirmed = confirm(message);
+        if (callback) callback(confirmed);
+    }
+}
+
+// Replace browser alert with modern alert
+function modernAlert(message, type = 'info', title) {
+    if (modernAlerts) {
+        switch(type) {
+            case 'success':
+                modernAlerts.success(message, title);
+                break;
+            case 'error':
+                modernAlerts.error(message, title);
+                break;
+            case 'warning':
+                modernAlerts.warning(message, title);
+                break;
+            default:
+                modernAlerts.toast(message, 'info');
+        }
+    } else {
+        // Fallback to browser alert if modernAlerts isn't ready
+        alert(message);
+    }
+}
+</script>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Xwepo Hospital Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='{{ url_for('static', filename='libs/bootstrap/bootstrap.min.css') }}'">
+    <link href="{{ url_for('static', filename='libs/fontawesome/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
+    <style>
+        .card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(44, 166, 154, 0.1);
+            background: var(--white);
+        }
+        .btn-action {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
+        }
+        .setting-item {
+            border-bottom: 1px solid #e9ecef;
+            padding: 1rem 0;
+        }
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body style="background-color: var(--light-gray);">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-teal-dark);">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/xwepo_logo.png') }}" alt="Xwepo" class="me-2" style="height: 30px;">
+                <span>Xwepo</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
+                <a class="nav-link" href="{{ url_for('add_patient') }}">Add Patient</a>
+                <a class="nav-link" href="{{ url_for('users') }}">Users</a>
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header" style="background-color: var(--primary-teal);">
+                        <h4 class="text-white mb-0"><i class="fas fa-cog me-2"></i>Account Settings</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <form method="POST" action="{{ url_for('settings') }}">
+                            <div class="setting-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <h6 class="mb-0"><i class="fas fa-user me-2 text-primary"></i>Username</h6>
+                                        <small class="text-muted">Your login username</small>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" value="{{ current_user.username }}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <h6 class="mb-0"><i class="fas fa-key me-2 text-primary"></i>Change Password</h6>
+                                        <small class="text-muted">Update your account password</small>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <label for="current_password" class="form-label">Current Password</label>
+                                            <input type="password" class="form-control" id="current_password" name="current_password">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="new_password" class="form-label">New Password</label>
+                                            <input type="password" class="form-control" id="new_password" name="new_password">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                            <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                                        </div>
+                                        <button type="submit" name="action" value="change_password" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Update Password
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <h6 class="mb-0"><i class="fas fa-bell me-2 text-primary"></i>Notifications</h6>
+                                        <small class="text-muted">Manage your notification preferences</small>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="email_notifications" checked>
+                                            <label class="form-check-label" for="email_notifications">
+                                                Email Notifications
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="appointment_reminders" checked>
+                                            <label class="form-check-label" for="appointment_reminders">
+                                                Appointment Reminders
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <h6 class="mb-0"><i class="fas fa-sun me-2 text-primary"></i>Theme</h6>
+                                        <small class="text-muted">Choose your preferred theme</small>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <form id="theme-form">
+                                            <select id="theme-selector" class="form-select" name="theme">
+                                                <option value="light">Light Theme</option>
+                                                <option value="dark">Dark Theme</option>
+                                                <option value="auto" selected>Auto (System)</option>
+                                            </select>
+                                        </form>
+                                        <small class="text-muted mt-1 d-block">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Theme changes are applied instantly
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="mt-4 pt-3 border-top">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{{ url_for('profile') }}" class="btn btn-outline-primary btn-action">
+                                    <i class="fas fa-user me-2"></i>Profile
+                                </a>
+                                <a href="{{ url_for('index') }}" class="btn btn-primary btn-action">
+                                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" onerror="this.onerror=null;this.src='{{ url_for('static', filename='libs/bootstrap/bootstrap.bundle.min.js') }}'"></script>
+    <script src="{{ url_for('static', filename='js/theme-switcher.js') }}"></script>
+</body>
+</html>

@@ -4,73 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Doctor - Hospital Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Consistent gradient color scheme */
-        .bg-primary, .btn-primary {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='{{ url_for('static', filename='libs/bootstrap/bootstrap.min.css') }}'">
+    <link href="{{ url_for('static', filename='libs/fontawesome/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
+        <style>
+        .card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(44, 166, 154, 0.1);
+            background: var(--white);
         }
-        .bg-success, .btn-success {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-info, .btn-info {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-warning, .btn-warning {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-secondary, .btn-secondary {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-danger, .btn-danger {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .bg-dark, .btn-dark {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            border-color: #2c3e50 !important;
-        }
-        .btn-outline-primary {
-            color: #2c3e50 !important;
-            border-color: #2c3e50 !important;
-        }
-        .btn-outline-primary:hover {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            color: white !important;
-        }
-        .btn-outline-secondary {
-            color: #2c3e50 !important;
-            border-color: #2c3e50 !important;
-        }
-        .btn-outline-secondary:hover {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-            color: white !important;
-        }
-        .card-header.bg-primary {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-        }
-        .navbar-dark.bg-primary {
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
-        }
-        /* Hover effects for all buttons */
-        .btn-primary:hover, .btn-success:hover, .btn-info:hover, .btn-warning:hover, .btn-secondary:hover, .btn-danger:hover, .btn-dark:hover {
-            background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        .btn-action {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
         }
     </style>
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body style="background-color: var(--light-gray);">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-teal-dark);">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">
-                <i class="fas fa-hospital me-2"></i>Hospital Management System
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/xwepo_logo.png') }}" alt="Xwepo" class="me-2" style="height: 30px;">
+                <span>Xwepo</span>
             </a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
@@ -94,14 +51,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Doctor Name *</label>
-                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        <label for="first_name" class="form-label">First Name *</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="license_number" class="form-label">License Number *</label>
-                                        <input type="text" class="form-control" id="license_number" name="license_number" required>
+                                        <label for="last_name" class="form-label">Last Name *</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" required>
                                     </div>
                                 </div>
                             </div>
@@ -109,31 +66,42 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
+                                        <label for="full_name_display" class="form-label">Full Name (Auto-generated)</label>
+                                        <input type="text" class="form-control" id="full_name_display" readonly>
+                                        <div class="form-text">This will be displayed as "[First Name] [Last Name]" (e.g., Dr. John Smith)</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
                                         <label for="specialization" class="form-label">Specialization *</label>
                                         <select class="form-select" id="specialization" name="specialization" required>
                                             <option value="">Select Specialization</option>
                                             <option value="Cardiology">Cardiology</option>
                                             <option value="Neurology">Neurology</option>
-                                            <option value="Pediatrics">Pediatrics</option>
                                             <option value="Orthopedics">Orthopedics</option>
+                                            <option value="Pediatrics">Pediatrics</option>
                                             <option value="Dermatology">Dermatology</option>
-                                            <option value="Oncology">Oncology</option>
-                                            <option value="Psychiatry">Psychiatry</option>
                                             <option value="General Medicine">General Medicine</option>
-                                            <option value="Emergency Medicine">Emergency Medicine</option>
                                             <option value="Surgery">Surgery</option>
                                             <option value="Radiology">Radiology</option>
-                                            <option value="Pathology">Pathology</option>
-                                            <option value="Anesthesiology">Anesthesiology</option>
-                                            <option value="Obstetrics & Gynecology">Obstetrics & Gynecology</option>
+                                            <option value="Emergency Medicine">Emergency Medicine</option>
+                                            <option value="Internal Medicine">Internal Medicine</option>
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="license_number" class="form-label">License Number *</label>
+                                        <input type="text" class="form-control" id="license_number" name="license_number" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="experience_years" class="form-label">Years of Experience</label>
-                                        <input type="number" class="form-control" id="experience_years" name="experience_years" 
-                                               min="0" max="50">
+                                        <label for="experience_years" class="form-label">Years of Experience *</label>
+                                        <input type="number" class="form-control" id="experience_years" name="experience_years" min="0" max="50" required>
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +111,7 @@
                                     <div class="mb-3">
                                         <label for="contact_number" class="form-label">Contact Number</label>
                                         <input type="tel" class="form-control" id="contact_number" name="contact_number" 
-                                               placeholder="+1-555-0123">
+                                               placeholder="+264 61 123 4567">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -156,26 +124,63 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="education" class="form-label">Education & Qualifications</label>
-                                <textarea class="form-control" id="education" name="education" rows="3" 
-                                          placeholder="Enter educational background, degrees, certifications..."></textarea>
+                                <label for="address" class="form-label">Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="2" 
+                                          placeholder="e.g., 123 Independence Avenue, Windhoek, Khomas Region"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="qualifications" class="form-label">Qualifications</label>
+                                <textarea class="form-control" id="qualifications" name="qualifications" rows="3" 
+                                          placeholder="e.g., MBBS, MD, PhD, Board Certified"></textarea>
                             </div>
 
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success btn-lg">
-                                    <i class="fas fa-save me-2"></i>Add Doctor
+                                    <i class="fas fa-save me-2"></i>Register Doctor
                                 </button>
                                 <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
                                     <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                                 </a>
                             </div>
+
+                            <!-- Hidden field for the complete name -->
+                            <input type="hidden" id="complete_name" name="complete_name">
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" onerror="this.onerror=null;this.src='{{ url_for('static', filename='libs/bootstrap/bootstrap.bundle.min.js') }}'"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include Modern Alert System -->
+    {% include 'modern_alerts.html' %}
+    <script>
+        // Function to update the full name display and hidden field
+        function updateFullName() {
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            
+            if (firstName && lastName) {
+                const fullName = `Dr. ${firstName} ${lastName}`;
+                document.getElementById('full_name_display').value = fullName;
+                document.getElementById('complete_name').value = fullName;
+            } else {
+                document.getElementById('full_name_display').value = '';
+                document.getElementById('complete_name').value = '';
+            }
+        }
+
+        // Add event listeners to first and last name fields
+        document.getElementById('first_name').addEventListener('input', updateFullName);
+        document.getElementById('last_name').addEventListener('input', updateFullName);
+
+        // Update on page load if fields have values
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFullName();
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/theme-switcher.js') }}"></script>
+
 </body>
 </html>

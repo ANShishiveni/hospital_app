@@ -4,12 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Doctor - Hospital Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='{{ url_for('static', filename='libs/bootstrap/bootstrap.min.css') }}'">
+    <link href="{{ url_for('static', filename='libs/fontawesome/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
+        <style>
+        .card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(44, 166, 154, 0.1);
+            background: var(--white);
+        }
+        .btn-action {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
+        }
+    </style>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body style="background-color: var(--light-gray);">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-teal-dark);">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Hospital Management System</a>
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/xwepo_logo.png') }}" alt="Xwepo" class="me-2" style="height: 30px;">
+                <span>Xwepo</span>
+            </a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
                 <a class="nav-link" href="{{ url_for('add_patient') }}">Add Patient</a>
@@ -20,37 +39,113 @@
 
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="mb-0">Edit Doctor: {{ doctor.name }}</h4>
+            <div class="col-lg-10">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-md me-2"></i>Edit Doctor: {{ doctor.name }}
+                        </h4>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ url_for('edit_doctor', doctor_id=doctor.id) }}">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Doctor Name *</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ doctor.name }}" required>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="first_name" class="form-label">First Name *</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ doctor.first_name or doctor.name.split()[0] if doctor.name else '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="last_name" class="form-label">Last Name *</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ doctor.last_name or doctor.name.split()[-1] if doctor.name else '' }}" required>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="specialization" class="form-label">Specialization *</label>
-                                <select class="form-select" id="specialization" name="specialization" required>
-                                    <option value="">Select Specialization</option>
-                                    <option value="Cardiology" {% if doctor.specialization == 'Cardiology' %}selected{% endif %}>Cardiology</option>
-                                    <option value="Neurology" {% if doctor.specialization == 'Neurology' %}selected{% endif %}>Neurology</option>
-                                    <option value="Pediatrics" {% if doctor.specialization == 'Pediatrics' %}selected{% endif %}>Pediatrics</option>
-                                    <option value="Orthopedics" {% if doctor.specialization == 'Orthopedics' %}selected{% endif %}>Orthopedics</option>
-                                    <option value="Dermatology" {% if doctor.specialization == 'Dermatology' %}selected{% endif %}>Dermatology</option>
-                                    <option value="Oncology" {% if doctor.specialization == 'Oncology' %}selected{% endif %}>Oncology</option>
-                                    <option value="Psychiatry" {% if doctor.specialization == 'Psychiatry' %}selected{% endif %}>Psychiatry</option>
-                                    <option value="General Medicine" {% if doctor.specialization == 'General Medicine' %}selected{% endif %}>General Medicine</option>
-                                    <option value="Emergency Medicine" {% if doctor.specialization == 'Emergency Medicine' %}selected{% endif %}>Emergency Medicine</option>
-                                    <option value="Surgery" {% if doctor.specialization == 'Surgery' %}selected{% endif %}>Surgery</option>
-                                </select>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="full_name_display" class="form-label">Full Name (Auto-generated)</label>
+                                        <input type="text" class="form-control" id="full_name_display" readonly>
+                                        <div class="form-text">This will be displayed as "Dr. [First Name] [Last Name]"</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="license_number" class="form-label">License Number *</label>
+                                        <input type="text" class="form-control" id="license_number" name="license_number" 
+                                               value="{{ doctor.license_number or '' }}" required>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="specialization" class="form-label">Specialization *</label>
+                                        <select class="form-select" id="specialization" name="specialization" required>
+                                            <option value="">Select Specialization</option>
+                                            <option value="Cardiology" {% if doctor.specialization == 'Cardiology' %}selected{% endif %}>Cardiology</option>
+                                            <option value="Neurology" {% if doctor.specialization == 'Neurology' %}selected{% endif %}>Neurology</option>
+                                            <option value="Pediatrics" {% if doctor.specialization == 'Pediatrics' %}selected{% endif %}>Pediatrics</option>
+                                            <option value="Orthopedics" {% if doctor.specialization == 'Orthopedics' %}selected{% endif %}>Orthopedics</option>
+                                            <option value="Dermatology" {% if doctor.specialization == 'Dermatology' %}selected{% endif %}>Dermatology</option>
+                                            <option value="Oncology" {% if doctor.specialization == 'Oncology' %}selected{% endif %}>Oncology</option>
+                                            <option value="Psychiatry" {% if doctor.specialization == 'Psychiatry' %}selected{% endif %}>Psychiatry</option>
+                                            <option value="General Medicine" {% if doctor.specialization == 'General Medicine' %}selected{% endif %}>General Medicine</option>
+                                            <option value="Emergency Medicine" {% if doctor.specialization == 'Emergency Medicine' %}selected{% endif %}>Emergency Medicine</option>
+                                            <option value="Surgery" {% if doctor.specialization == 'Surgery' %}selected{% endif %}>Surgery</option>
+                                            <option value="Radiology" {% if doctor.specialization == 'Radiology' %}selected{% endif %}>Radiology</option>
+                                            <option value="Pathology" {% if doctor.specialization == 'Pathology' %}selected{% endif %}>Pathology</option>
+                                            <option value="Anesthesiology" {% if doctor.specialization == 'Anesthesiology' %}selected{% endif %}>Anesthesiology</option>
+                                            <option value="Obstetrics & Gynecology" {% if doctor.specialization == 'Obstetrics & Gynecology' %}selected{% endif %}>Obstetrics & Gynecology</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="experience_years" class="form-label">Years of Experience</label>
+                                        <input type="number" class="form-control" id="experience_years" name="experience_years" 
+                                               value="{{ doctor.experience_years or '' }}" min="0" max="50">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="contact_number" class="form-label">Contact Number</label>
+                                        <input type="tel" class="form-control" id="contact_number" name="contact_number" 
+                                               value="{{ doctor.contact_number or '' }}" placeholder="+264 61 123 4567">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" name="email" 
+                                               value="{{ doctor.email or '' }}" placeholder="doctor@windhoekmed.com.na">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="education" class="form-label">Education & Qualifications</label>
+                                <textarea class="form-control" id="education" name="education" rows="3" 
+                                          placeholder="e.g., MBChB from University of Namibia, Specialist in Cardiology from University of Cape Town...">{{ doctor.education or '' }}</textarea>
+                            </div>
+
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">Update Doctor</button>
-                                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Update Doctor
+                                </button>
+                                <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </a>
                             </div>
+
+                            <!-- Hidden field for the complete name -->
+                            <input type="hidden" id="complete_name" name="complete_name">
                         </form>
                     </div>
                 </div>
@@ -58,6 +153,31 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" onerror="this.onerror=null;this.src='{{ url_for('static', filename='libs/bootstrap/bootstrap.bundle.min.js') }}'"></script>
+    <script>
+        // Function to update the full name display and hidden field
+        function updateFullName() {
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            
+            if (firstName && lastName) {
+                const fullName = `Dr. ${firstName} ${lastName}`;
+                document.getElementById('full_name_display').value = fullName;
+                document.getElementById('complete_name').value = fullName;
+            } else {
+                document.getElementById('full_name_display').value = '';
+                document.getElementById('complete_name').value = '';
+            }
+        }
+
+        // Add event listeners to first and last name fields
+        document.getElementById('first_name').addEventListener('input', updateFullName);
+        document.getElementById('last_name').addEventListener('input', updateFullName);
+
+        // Update on page load if fields have values
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFullName();
+        });
+    </script>
 </body>
 </html>

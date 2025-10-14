@@ -4,55 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Hospital Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-        .register-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-        .hospital-icon {
-            font-size: 4rem;
-            color: #667eea;
-        }
-        .form-control {
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
-            padding: 12px 15px;
-            transition: all 0.3s ease;
-        }
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-        }
-        .btn-register {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='{{ url_for('static', filename='libs/bootstrap/bootstrap.min.css') }}'">
+    <link href="{{ url_for('static', filename='libs/fontawesome/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/color-scheme.css') }}" rel="stylesheet">
+        <style>
+        .card {
+            border-radius: 15px;
             border: none;
-            border-radius: 10px;
-            padding: 12px 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(44, 166, 154, 0.1);
+            background: var(--white);
         }
-        .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        .btn-action {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
         }
-        .password-strength {
-            height: 5px;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-        .strength-weak { background-color: #dc3545; }
-        .strength-medium { background-color: #ffc107; }
-        .strength-strong { background-color: #28a745; }
     </style>
 </head>
 <body>
@@ -86,9 +53,9 @@
                                         <label for="username" class="form-label text-dark fw-semibold">
                                             <i class="fas fa-user me-2"></i>Username *
                                         </label>
-                                        <input type="text" class="form-control" id="username" name="username" required 
-                                               minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
-                                               placeholder="Enter username (3-20 characters)">
+                                                                                 <input type="text" class="form-control" id="username" name="username" required 
+                                                minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
+                                                placeholder="e.g., john_doe, mary.smith, dr_williams">
                                         <div class="form-text">Only letters, numbers, and underscores allowed</div>
                                     </div>
                                 </div>
@@ -97,8 +64,67 @@
                                         <label for="email" class="form-label text-dark fw-semibold">
                                             <i class="fas fa-envelope me-2"></i>Email Address *
                                         </label>
-                                        <input type="email" class="form-control" id="email" name="email" required
-                                               placeholder="Enter your email address">
+                                                                                 <input type="email" class="form-control" id="email" name="email" required
+                                                placeholder="e.g., john.doe@email.com.na">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="first_name" class="form-label text-dark fw-semibold">
+                                            <i class="fas fa-user me-2"></i>First Name *
+                                        </label>
+                                                                                 <input type="text" class="form-control" id="first_name" name="first_name" required
+                                                placeholder="e.g., John, Mary, David">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="last_name" class="form-label text-dark fw-semibold">
+                                            <i class="fas fa-user me-2"></i>Last Name *
+                                        </label>
+                                                                                 <input type="text" class="form-control" id="last_name" name="last_name" required
+                                                placeholder="e.g., Smith, Williams, Johnson">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="full_name_display" class="form-label text-dark fw-semibold">
+                                            <i class="fas fa-user me-2"></i>Full Name (Auto-generated)
+                                        </label>
+                                        <input type="text" class="form-control" id="full_name_display" readonly>
+                                        <div class="form-text">This will be displayed as "[First Name] [Last Name]" or "Dr. [First Name] [Last Name]" for doctors</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label text-dark fw-semibold">
+                                            <i class="fas fa-user-tag me-2"></i>Role *
+                                        </label>
+                                        <select class="form-select" id="role" name="role" required>
+                                            <option value="">Select your role</option>
+                                            {% if not current_user.is_authenticated or current_user.role == 'admin' %}
+                                            <option value="staff">Staff Member</option>
+                                            <option value="doctor">Doctor</option>
+                                            <option value="admin">Administrator</option>
+                                            {% else %}
+                                            <option value="staff">Staff Member</option>
+                                            {% endif %}
+                                        </select>
+                                        <div class="form-text">
+                                            {% if not current_user.is_authenticated %}
+                                            Choose the role that best describes your position
+                                            {% elif current_user.role == 'admin' %}
+                                            You can create accounts with any role
+                                            {% else %}
+                                            You can only create staff member accounts
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -109,8 +135,8 @@
                                         <label for="password" class="form-label text-dark fw-semibold">
                                             <i class="fas fa-lock me-2"></i>Password *
                                         </label>
-                                        <input type="password" class="form-control" id="password" name="password" required
-                                               minlength="6" placeholder="Enter password (min 6 characters)">
+                                                                                 <input type="password" class="form-control" id="password" name="password" required
+                                                minlength="6" placeholder="e.g., MySecure123!">
                                         <div class="password-strength mt-2" id="passwordStrength"></div>
                                         <div class="form-text">Password must be at least 6 characters long</div>
                                     </div>
@@ -120,37 +146,14 @@
                                         <label for="confirm_password" class="form-label text-dark fw-semibold">
                                             <i class="fas fa-lock me-2"></i>Confirm Password *
                                         </label>
-                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required
-                                               placeholder="Confirm your password">
+                                                                                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" required
+                                                placeholder="e.g., MySecure123!">
                                         <div class="form-text" id="passwordMatch"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mb-4">
-                                <label for="role" class="form-label text-dark fw-semibold">
-                                    <i class="fas fa-user-tag me-2"></i>Role *
-                                </label>
-                                <select class="form-select" id="role" name="role" required>
-                                    <option value="">Select your role</option>
-                                    {% if not current_user.is_authenticated or current_user.role == 'admin' %}
-                                    <option value="staff">Staff Member</option>
-                                    <option value="doctor">Doctor</option>
-                                    <option value="admin">Administrator</option>
-                                    {% else %}
-                                    <option value="staff">Staff Member</option>
-                                    {% endif %}
-                                </select>
-                                <div class="form-text">
-                                    {% if not current_user.is_authenticated %}
-                                    Choose the role that best describes your position
-                                    {% elif current_user.role == 'admin' %}
-                                    You can create accounts with any role
-                                    {% else %}
-                                    You can only create staff member accounts
-                                    {% endif %}
-                                </div>
-                            </div>
+
 
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary btn-register">
@@ -160,6 +163,9 @@
                                     <i class="fas fa-sign-in-alt me-2"></i>Already have an account? Sign In
                                 </a>
                             </div>
+
+                            <!-- Hidden field for the complete name -->
+                            <input type="hidden" id="complete_name" name="complete_name">
                         </form>
 
                         <div class="text-center mt-4">
@@ -171,10 +177,42 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" onerror="this.onerror=null;this.src='{{ url_for('static', filename='libs/bootstrap/bootstrap.bundle.min.js') }}'"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include Modern Alert System -->
+    {% include 'modern_alerts.html' %}
     <script>
+        // Function to update the full name display and hidden field
+        function updateFullName() {
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            const role = document.getElementById('role').value;
+            
+            if (firstName && lastName) {
+                let fullName;
+                if (role === 'doctor') {
+                    fullName = `Dr. ${firstName} ${lastName}`;
+                } else {
+                    fullName = `${firstName} ${lastName}`;
+                }
+                document.getElementById('full_name_display').value = fullName;
+                document.getElementById('complete_name').value = fullName;
+            } else {
+                document.getElementById('full_name_display').value = '';
+                document.getElementById('complete_name').value = '';
+            }
+        }
+
+        // Add event listeners to first and last name fields and role
+        document.getElementById('first_name').addEventListener('input', updateFullName);
+        document.getElementById('last_name').addEventListener('input', updateFullName);
+        document.getElementById('role').addEventListener('change', updateFullName);
+
+        // Update on page load if fields have values
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFullName();
+        });
+
         // Password strength indicator
         document.getElementById('password').addEventListener('input', function() {
             const password = this.value;
@@ -233,13 +271,13 @@
             
             if (password !== confirmPassword) {
                 e.preventDefault();
-                alert('Passwords do not match!');
+                modernAlert('Passwords do not match!', 'error', 'Password Mismatch');
                 return false;
             }
             
             if (password.length < 6) {
                 e.preventDefault();
-                alert('Password must be at least 6 characters long!');
+                modernAlert('Password must be at least 6 characters long!', 'warning', 'Password Too Short');
                 return false;
             }
         });
