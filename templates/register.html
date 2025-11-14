@@ -29,7 +29,7 @@
                 <div class="card register-card border-0">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <i class="fas fa-hospital hospital-icon mb-3"></i>
+                            <img src="{{ url_for('static', filename='images/xwepo_logo.png') }}" alt="Xwepo Hospital Management System" class="img-fluid mb-3" style="max-height: 200px; width: auto;">
                             <h3 class="text-dark fw-bold">Create Account</h3>
                             <p class="text-muted">Join the Hospital Management System</p>
                         </div>
@@ -54,8 +54,7 @@
                                             <i class="fas fa-user me-2"></i>Username *
                                         </label>
                                                                                  <input type="text" class="form-control" id="username" name="username" required 
-                                                minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
-                                                placeholder="e.g., john_doe, mary.smith, dr_williams">
+                                                minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+">
                                         <div class="form-text">Only letters, numbers, and underscores allowed</div>
                                     </div>
                                 </div>
@@ -64,8 +63,7 @@
                                         <label for="email" class="form-label text-dark fw-semibold">
                                             <i class="fas fa-envelope me-2"></i>Email Address *
                                         </label>
-                                                                                 <input type="email" class="form-control" id="email" name="email" required
-                                                placeholder="e.g., john.doe@email.com.na">
+                                                                                 <input type="email" class="form-control" id="email" name="email" required>
                                     </div>
                                 </div>
                             </div>
@@ -76,8 +74,7 @@
                                         <label for="first_name" class="form-label text-dark fw-semibold">
                                             <i class="fas fa-user me-2"></i>First Name *
                                         </label>
-                                                                                 <input type="text" class="form-control" id="first_name" name="first_name" required
-                                                placeholder="e.g., John, Mary, David">
+                                                                                 <input type="text" class="form-control" id="first_name" name="first_name" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -85,8 +82,7 @@
                                         <label for="last_name" class="form-label text-dark fw-semibold">
                                             <i class="fas fa-user me-2"></i>Last Name *
                                         </label>
-                                                                                 <input type="text" class="form-control" id="last_name" name="last_name" required
-                                                placeholder="e.g., Smith, Williams, Johnson">
+                                                                                 <input type="text" class="form-control" id="last_name" name="last_name" required>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +132,7 @@
                                             <i class="fas fa-lock me-2"></i>Password *
                                         </label>
                                                                                  <input type="password" class="form-control" id="password" name="password" required
-                                                minlength="6" placeholder="e.g., MySecure123!">
+                                                minlength="6">
                                         <div class="password-strength mt-2" id="passwordStrength"></div>
                                         <div class="form-text">Password must be at least 6 characters long</div>
                                     </div>
@@ -146,8 +142,7 @@
                                         <label for="confirm_password" class="form-label text-dark fw-semibold">
                                             <i class="fas fa-lock me-2"></i>Confirm Password *
                                         </label>
-                                                                                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" required
-                                                placeholder="e.g., MySecure123!">
+                                                                                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                                         <div class="form-text" id="passwordMatch"></div>
                                     </div>
                                 </div>
