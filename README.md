@@ -2,9 +2,9 @@
 
 A comprehensive, professional-grade hospital management application built with Flask, SQLite, and Bootstrap. This enhanced version includes advanced features like user authentication, medical record management, prescription tracking, and doctor availability scheduling.
 
-## ✨ New Features Implemented
+## New Features Implemented
 
-### 🔐 User Authentication System
+### User Authentication System
 - **Secure Login**: Professional login interface with session management
 - **Role-based Access**: Support for admin, doctor, and staff roles
 - **Session Security**: Flask-Login integration with secure password hashing
@@ -13,19 +13,19 @@ A comprehensive, professional-grade hospital management application built with F
 - **User Management**: Admin interface for managing user accounts
 - **Password Security**: Strong password requirements and validation
 
-### 📁 Medical Record Management
+### Medical Record Management
 - **File Uploads**: Support for PDF, DOC, images, and other medical documents
 - **Secure Storage**: Unique filename generation with UUID protection
 - **File Types**: Lab results, X-rays, MRI scans, CT scans, blood tests, etc.
 - **Download & Delete**: Secure file access and management
 
-### 💊 Prescription Management
+### Prescription Management
 - **Medication Tracking**: Complete prescription lifecycle management
 - **Dosage Information**: Frequency, duration, and special instructions
 - **Expiry Dates**: Medication expiration tracking
 - **Patient-Doctor Linking**: Prescription attribution and history
 
-### ⏰ Doctor Availability System
+### Doctor Availability System
 - **Weekly Scheduling**: Monday through Sunday availability management
 - **Time Slots**: Customizable start/end times for each day
 - **Appointment Limits**: Maximum appointments per day configuration
@@ -39,13 +39,13 @@ A comprehensive, professional-grade hospital management application built with F
 - **User Statistics**: Overview of user counts and roles
 - **Security Features**: Username/email uniqueness validation
 
-### �� Professional UI/UX
+### Professional UI/UX
 - **Modern Design**: Bootstrap 5.3 with custom styling
 - **Responsive Layout**: Mobile-first design approach
 - **Icon Integration**: Font Awesome icons throughout the interface
 - **Color-coded Elements**: Intuitive visual feedback system
 
-## 🏗️ Enhanced Database Schema
+## Enhanced Database Schema
 
 ### Core Entities
 - **Users**: Authentication and role management
@@ -62,7 +62,7 @@ A comprehensive, professional-grade hospital management application built with F
 - **Data Validation**: Comprehensive input validation
 - **Error Handling**: Graceful error management with user feedback
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Python 3.9+ (Recommended: Python 3.13.6)
@@ -85,19 +85,7 @@ python app.py
 # Login: admin / admin123
 ```
 
-## 📋 Lab Requirements Completion
-
-| Requirement | Points | Status | Implementation |
-|-------------|--------|--------|----------------|
-| **Database Setup** | 10 | ✅ Complete | Enhanced SQLite schema with relationships |
-| **Patient CRUD** | 15 | ✅ Complete | Full CRUD with extended patient profiles |
-| **Appointment System** | 15 | ✅ Complete | Advanced scheduling with time management |
-| **Error Handling** | 5 | ✅ Complete | Comprehensive error handling and validation |
-| **UI/UX** | 5 | ✅ Complete | Professional Bootstrap interface |
-
-**Total: 50/50 Points** 🎯
-
-## 🆕 Bonus Features Implemented
+## Extra Features Implemented
 
 ### 1. Medical Record Uploads (File Handling)
 - **Secure File Storage**: UUID-based filename generation
@@ -123,7 +111,7 @@ python app.py
 - **Appointment Limits**: Daily capacity management
 - **Visual Interface**: Interactive availability cards
 
-## 🎨 UI/UX Enhancements
+## UI/UX Enhancements
 
 ### Design Features
 - **Modern Bootstrap 5.3**: Latest responsive framework
@@ -159,7 +147,7 @@ python app.py
 - **File Validation**: Secure file upload handling
 - **Input Sanitization**: Form validation and sanitization
 
-## 📱 User Interface Features
+## User Interface Features
 
 ### Dashboard
 - **Statistics Cards**: Real-time data overview
@@ -179,7 +167,7 @@ python app.py
 - **Responsive Design**: Mobile-friendly table layouts
 - **Status Indicators**: Visual status representation
 
-## 🚀 Getting Started
+## Getting Started
 
 ### First Time Setup
 1. **Install Dependencies**: `pip install -r requirements.txt`
@@ -193,7 +181,7 @@ python app.py
 - **Admin User**: Default admin account created
 - **File Storage**: Upload directory created automatically
 
-## 🔍 Feature Walkthrough
+## Feature Walkthrough
 
 ### 1. Authentication
 - Professional login interface
@@ -236,7 +224,7 @@ python app.py
 - Appointment capacity limits
 - Visual availability interface
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 1. **Port Conflicts**: Change port in `app.py` if needed
@@ -250,7 +238,7 @@ python app.py
 - **File Upload Errors**: Check file size and format
 - **Validation Errors**: Review form input requirements
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 1. **Advanced Reporting**: Analytics and data visualization
@@ -267,7 +255,7 @@ python app.py
 4. **CI/CD**: Automated deployment pipeline
 5. **Monitoring**: Application performance monitoring
 
-## 📚 Technical Documentation
+## Technical Documentation
 
 ### Code Structure
 ```
@@ -299,7 +287,7 @@ hospital_app/
 - **Prescriptions**: Medication tracking
 - **Doctor Availability**: Schedule management
 
-## 🤝 Support & Contributing
+## Support & Contributing
 
 ### Getting Help
 - **Documentation**: Comprehensive README and code comments
@@ -319,22 +307,6 @@ This project is created for educational purposes as part of the CMP3872 Database
 
 ---
 
-## 🎉 System Status: FULLY OPERATIONAL
-
-**All lab requirements completed with bonus features implemented!**
-
-- ✅ **Database Setup**: Enhanced SQLite schema
-- ✅ **Patient CRUD**: Complete patient management
-- ✅ **Appointment System**: Advanced scheduling
-- ✅ **Error Handling**: Comprehensive validation
-- ✅ **UI/UX**: Professional Bootstrap interface
-- ✅ **Authentication**: Secure user management
-- ✅ **File Handling**: Medical record uploads
-- ✅ **Prescriptions**: Medication tracking
-- ✅ **Availability**: Doctor scheduling system
-
-**Ready for production use with professional-grade features!** 🚀
-
 ---
 
-**Developed with ❤️ using Flask, SQLAlchemy, Bootstrap, and modern web technologies**
+**Developed with LOVE using Flask, SQLAlchemy, Bootstrap, and modern web technologies**
