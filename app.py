@@ -9,7 +9,9 @@ import uuid
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hospital.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your-super-secret-key-change-in-production'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+if not app.config['SECRET_KEY']:
+    raise RuntimeError('SECRET_KEY must be set in the environment')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
@@ -32,14 +34,8 @@ def load_user(user_id):
 with app.app_context():
     db.create_all()
     
-    # Create admin user if not exists
-    if not User.query.filter_by(username='admin').first():
-        admin = User(username='admin', email='admin@hospital.com', role='admin')
-        admin.set_password('admin123')
-        db.session.add(admin)
-        db.session.commit()
-    
-
+    # Do not create default users or credentials at application startup.
+# Create the initial administrator explicitly through a trusted setup process.
 
 # Routes
 @app.route('/')
@@ -258,7 +254,7 @@ def edit_patient(patient_id):
     today_date = datetime.now().strftime('%Y-%m-%d')
     return render_template('edit_patient.html', patient=patient, today_date=today_date)
 
-@app.route('/delete_patient/<int:patient_id>')
+@app.route('/delete_patient/<int:patient_id>', methods=['POST'])
 @login_required
 def delete_patient(patient_id):
     if current_user.role not in ['admin', 'staff']:
@@ -377,7 +373,7 @@ def edit_doctor(doctor_id):
     
     return render_template('edit_doctor.html', doctor=doctor)
 
-@app.route('/delete_doctor/<int:doctor_id>')
+@app.route('/delete_doctor/<int:doctor_id>', methods=['POST'])
 @login_required
 def delete_doctor(doctor_id):
     if current_user.role != 'admin':
