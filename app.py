@@ -718,7 +718,7 @@ def add_appointment():
         flash(f"Error scheduling appointment: {str(e)}", "error")
         return redirect(url_for('add_appointment'))
 
-@app.route('/delete_appointment/<int:appointment_id>')
+@app.route('/delete_appointment/<int:appointment_id>', methods=['POST'])
 @login_required
 def delete_appointment(appointment_id):
     try:
@@ -732,7 +732,7 @@ def delete_appointment(appointment_id):
     
     return redirect(url_for('index'))
 
-@app.route('/complete_appointment/<int:appointment_id>')
+@app.route('/complete_appointment/<int:appointment_id>', methods=['POST'])
 @login_required
 def complete_appointment(appointment_id):
     if current_user.role not in ['admin', 'doctor']:
@@ -954,7 +954,7 @@ def download_medical_record(record_id):
     
     return redirect(url_for('index'))
 
-@app.route('/delete_medical_record/<int:record_id>')
+@app.route('/delete_medical_record/<int:record_id>', methods=['POST'])
 @login_required
 def delete_medical_record(record_id):
     if current_user.role not in ['admin', 'doctor']:
@@ -1012,7 +1012,7 @@ def add_prescription():
         flash(f"Error adding prescription: {str(e)}", "error")
         return redirect(url_for('add_prescription'))
 
-@app.route('/delete_prescription/<int:prescription_id>')
+@app.route('/delete_prescription/<int:prescription_id>', methods=['POST'])
 @login_required
 def delete_prescription(prescription_id):
     if current_user.role not in ['admin', 'doctor']:
@@ -1114,7 +1114,7 @@ def toggle_user_status(user_id):
     
     return redirect(url_for('users'))
 
-@app.route('/delete_user/<int:user_id>')
+@app.route('/delete_user/<int:user_id>', methods=['POST'])
 @login_required
 def delete_user(user_id):
     if current_user.role != 'admin':
@@ -1230,5 +1230,6 @@ def settings():
     return render_template('settings.html')
 
 if __name__ == '__main__':
-    app.run(host = "0.0.0.0", debug=True)
+    debug = os.environ.get("FLASK_DEBUG", "").lower() in {"1", "true", "yes"}
+    app.run(host="0.0.0.0", debug=debug)
 
