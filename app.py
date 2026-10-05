@@ -9,7 +9,9 @@ import uuid
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hospital.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your-super-secret-key-change-in-production'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+if not app.config['SECRET_KEY']:
+    raise RuntimeError('SECRET_KEY must be set in the environment')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
@@ -32,14 +34,8 @@ def load_user(user_id):
 with app.app_context():
     db.create_all()
     
-    # Create admin user if not exists
-    if not User.query.filter_by(username='admin').first():
-        admin = User(username='admin', email='admin@hospital.com', role='admin')
-        admin.set_password('admin123')
-        db.session.add(admin)
-        db.session.commit()
-    
-
+    # Do not create default users or credentials at application startup.
+# Create the initial administrator explicitly through a trusted setup process.
 
 # Routes
 @app.route('/')
@@ -258,7 +254,7 @@ def edit_patient(patient_id):
     today_date = datetime.now().strftime('%Y-%m-%d')
     return render_template('edit_patient.html', patient=patient, today_date=today_date)
 
-@app.route('/delete_patient/<int:patient_id>')
+@app.route('/delete_patient/<int:patient_id>', methods=['POST'])
 @login_required
 def delete_patient(patient_id):
     if current_user.role not in ['admin', 'staff']:
@@ -377,7 +373,7 @@ def edit_doctor(doctor_id):
     
     return render_template('edit_doctor.html', doctor=doctor)
 
-@app.route('/delete_doctor/<int:doctor_id>')
+@app.route('/delete_doctor/<int:doctor_id>', methods=['POST'])
 @login_required
 def delete_doctor(doctor_id):
     if current_user.role != 'admin':
@@ -722,7 +718,7 @@ def add_appointment():
         flash(f"Error scheduling appointment: {str(e)}", "error")
         return redirect(url_for('add_appointment'))
 
-@app.route('/delete_appointment/<int:appointment_id>')
+@app.route('/delete_appointment/<int:appointment_id>', methods=['POST'])
 @login_required
 def delete_appointment(appointment_id):
     try:
@@ -736,7 +732,7 @@ def delete_appointment(appointment_id):
     
     return redirect(url_for('index'))
 
-@app.route('/complete_appointment/<int:appointment_id>')
+@app.route('/complete_appointment/<int:appointment_id>', methods=['POST'])
 @login_required
 def complete_appointment(appointment_id):
     if current_user.role not in ['admin', 'doctor']:
@@ -958,7 +954,7 @@ def download_medical_record(record_id):
     
     return redirect(url_for('index'))
 
-@app.route('/delete_medical_record/<int:record_id>')
+@app.route('/delete_medical_record/<int:record_id>', methods=['POST'])
 @login_required
 def delete_medical_record(record_id):
     if current_user.role not in ['admin', 'doctor']:
@@ -1016,7 +1012,7 @@ def add_prescription():
         flash(f"Error adding prescription: {str(e)}", "error")
         return redirect(url_for('add_prescription'))
 
-@app.route('/delete_prescription/<int:prescription_id>')
+@app.route('/delete_prescription/<int:prescription_id>', methods=['POST'])
 @login_required
 def delete_prescription(prescription_id):
     if current_user.role not in ['admin', 'doctor']:
@@ -1118,7 +1114,7 @@ def toggle_user_status(user_id):
     
     return redirect(url_for('users'))
 
-@app.route('/delete_user/<int:user_id>')
+@app.route('/delete_user/<int:user_id>', methods=['POST'])
 @login_required
 def delete_user(user_id):
     if current_user.role != 'admin':
@@ -1234,5 +1230,6 @@ def settings():
     return render_template('settings.html')
 
 if __name__ == '__main__':
-    app.run(host = "0.0.0.0", debug=True)
+    debug = os.environ.get("FLASK_DEBUG", "").lower() in {"1", "true", "yes"}
+    app.run(host="0.0.0.0", debug=debug)
 
